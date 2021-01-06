@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devsuperiorevento.dsdeliver.dto.OrderDTO;
-import com.devsuperiorevento.dsdeliver.entities.Order;
 import com.devsuperiorevento.dsdeliver.servicies.OrderService;
 
 @RestController
