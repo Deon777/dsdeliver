@@ -4,10 +4,10 @@ import Home from './Home/index'
 
 function App() {
     return (
-      <div>
+      <>
         <Navbar/>
         <Home/>
-      </div>
+      </>
     );
 }
 
