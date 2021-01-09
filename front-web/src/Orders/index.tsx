@@ -1,13 +1,15 @@
 import "./styles.css"
-import StepsHeader from "./StepsHeader"
-import ProducsList from "./ProductsList"
+import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import { OrderLocationData, Product } from "./types";
-import { fetchProducts } from "../api";
+import { fetchProducts, saveOrder } from "../api";
+import { CheckIsSelected } from "./helpers";
+import StepsHeader from "./StepsHeader"
+import ProducsList from "./ProductsList"
 import OrderLocation from "./OrderLocation";
 import OrderSummary from "./OrderSummary";
 import HomeFooter from "../Footer";
-import { CheckIsSelected } from "./helpers";
+
 
 function Orders() {
 
@@ -21,7 +23,7 @@ function Orders() {
     useEffect(() => {
         fetchProducts()
         .then(response => SetProducts(response.data))
-        .catch(error => console.log(error));
+        .catch(error => toast.warning('Erro ao listar produtos'));
     }, []);
 
     const handleSelectProduct = (product: Product) => {
@@ -35,9 +37,26 @@ function Orders() {
         }
     }
 
+    const handleSubmit = () => {
+        const productsIds = selectedProducts.map(({ id }) => ({ id }));
+        const payload = {
+            ...orderLocation!,
+            products: productsIds
+        }
+      
+        saveOrder(payload).then((response) => {
+            toast.error(`Pedido enviado com sucesso! Nº ${response.data.id}`);
+            setSelectedProducts([]);
+        })
+        .catch(() => {
+            toast.warning('Erro ao enviar pedido');
+        })
+    }
+
     return (
         <>
             <div className="orders-container">
+
                 <StepsHeader/>
                 <ProducsList 
                     products={products} 
@@ -48,7 +67,9 @@ function Orders() {
                 <OrderSummary 
                     amount={selectedProducts.length} 
                     totalPrice={totalPrice}
+                    onSubmit={handleSubmit}
                 />
+                
             </div>
             <HomeFooter/>
         </>

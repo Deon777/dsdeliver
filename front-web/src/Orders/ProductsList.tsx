@@ -2,11 +2,13 @@ import { CheckIsSelected } from "./helpers";
 import ProductCard from "./ProductCard";
 import { Product } from "./types";
 
+
 type Props = {
     products: Product[];
     onSelectProduct: (product : Product) => void;
     selectedProducts: Product[];
 }
+
 
 function ProducsList({products, selectedProducts, onSelectProduct} : Props) {
     return (
